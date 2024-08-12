@@ -1,2 +1,14 @@
-package com.semicolon.dto.request;public class AddItemRequest {
+package com.semicolon.dto.request;
+
+import com.semicolon.data.model.Product;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.math.BigDecimal;
+
+@Getter @Setter
+public class AddItemRequest {
+    private Product product;
+    private int quantity;
+    private BigDecimal subTotal;
 }

@@ -1,7 +1,8 @@
 package com.semicolon.repositories;
 
+import com.semicolon.data.model.Item;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 
-public interface Item extends MongoRepository<Item, String> {
+public interface ItemRepository extends MongoRepository<Item, String> {
 }

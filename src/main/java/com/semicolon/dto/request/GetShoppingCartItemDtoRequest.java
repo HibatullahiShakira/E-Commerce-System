@@ -1,2 +1,11 @@
-package com.semicolon.dto.request;public class ShoppingCartItemGetRequest {
+package com.semicolon.dto.request;
+
+import com.semicolon.data.model.User;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter @Setter
+public class GetShoppingCartItemDtoRequest {
+    private String shoppingCartId;
+    private User user;
 }

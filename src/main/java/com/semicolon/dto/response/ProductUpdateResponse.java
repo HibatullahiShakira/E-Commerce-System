@@ -1,2 +1,9 @@
-package com.semicolon.dto.response;public class ProductUpdateResponse {
+package com.semicolon.dto.response;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter @Getter
+public class ProductUpdateResponse {
+    private String message;
 }

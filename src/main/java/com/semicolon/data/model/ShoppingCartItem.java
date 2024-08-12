@@ -8,13 +8,16 @@ import org.springframework.data.annotation.Id;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Getter @Setter @ToString
-public class ShoppingCart {
+
+@Getter @Setter
+public class ShoppingCartItem {
     private Item items;
     @Id
-    private String id;
+    private String shoppingCartId;
     private LocalDateTime creationDate;
-    private String orderStatus;
-    private BigDecimal productPrice;
     private OrderStatus status;
+    private String userId;
+    private String taxRate;
+    private BigDecimal totalPrice;
+    private User user;
 }

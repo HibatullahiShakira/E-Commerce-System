@@ -1,2 +1,9 @@
-package com.semicolon.dto.request;public class DeleteItemRequest {
+package com.semicolon.dto.request;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter @Setter
+public class DeleteItemRequest {
+    private String itemId;
 }

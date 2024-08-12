@@ -1,19 +1,18 @@
 package com.semicolon.services.serviceInterface;
 
-import com.semicolon.data.model.Product;
-import com.semicolon.dto.request.DeleteProductRequest;
-import com.semicolon.dto.request.ProductDtoRequest;
-import com.semicolon.dto.request.ProductUpdateRequest;
-import com.semicolon.dto.response.AddProductResponse;
-import com.semicolon.dto.response.ProductDtoResponse;
-import com.semicolon.dto.response.ProductUpdateResponse;
+import com.semicolon.data.model.ShoppingCartItem;
+import com.semicolon.dto.request.*;
+import com.semicolon.dto.response.*;
 
 import java.util.List;
 
-public interface ShoppingCartItem {
-    List<Product> getAllProduct();
-    AddProductResponse addProduct(ProductDtoRequest productDtoRequest);
-    ProductUpdateResponse updateProductById(ProductUpdateRequest productUpdateRequest);
-    String deleteProduct(DeleteProductRequest productRequest);
-    ProductDtoResponse getProductById(ProductDtoRequest productDtoRequest);
+public interface ShoppingCartItemService {
+    List<ShoppingCartItem> getAllShoppingCartItem();
+    AddShoppingCartItemResponse addShoppingCartItem(ShoppingCartItemDtoRequest shoppingCartItemDtoRequest);
+    ShoppingCartItemUpdateResponse updateShoppingCartItemByUser(ShoppingCartItemUpdateRequest shoppingCartItemUpdateRequest);
+    String deleteShoppingCartItemByUser(DeleteShoppingCartItemRequest shoppingCartItemRequest);
+    ShoppingCartItemUpdateResponse updateShoppingCartItemById(ShoppingCartItemUpdateRequest shoppingCartItemDtoRequest);
+    ShoppingCartItemDtoResponse getShoppingCartItemByUser(GetShoppingCartItemDtoRequest shoppingCartItemGetRequest);
+    ShoppingCartItemDtoResponse getShoppingCartItemById(GetShoppingCartItemDtoRequest shoppingCartItemGetRequest);
+
 }
