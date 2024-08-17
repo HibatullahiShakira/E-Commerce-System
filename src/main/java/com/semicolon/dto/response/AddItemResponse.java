@@ -9,6 +9,6 @@ import java.math.BigDecimal;
 @Setter @Getter
 public class AddItemResponse {
     private String itemId;
-    private BigDecimal subTotal;
+    private double subTotal;
     private String message;
 }

@@ -1,4 +1,4 @@
-package com.semicolon.repositories;
+package com.semicolon.data.repositories;
 
 import com.semicolon.data.model.Product;
 import org.springframework.data.mongodb.repository.MongoRepository;

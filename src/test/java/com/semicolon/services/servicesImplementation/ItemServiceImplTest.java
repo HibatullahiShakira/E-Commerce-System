@@ -2,19 +2,18 @@ package com.semicolon.services.servicesImplementation;
 
 import com.semicolon.data.model.Item;
 import com.semicolon.data.model.Product;
+import com.semicolon.data.repositories.ItemRepository;
 import com.semicolon.dto.request.DeleteItemRequest;
 import com.semicolon.dto.request.ItemDtoRequest;
 import com.semicolon.dto.request.ItemUpdateRequest;
 import com.semicolon.dto.response.AddItemResponse;
 import com.semicolon.dto.response.ItemUpdateResponse;
-import com.semicolon.repositories.ItemRepository;
 import com.semicolon.services.serviceInterface.ItemService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import static com.semicolon.data.model.ProductCategory.ELECTRONICS;
@@ -38,7 +37,7 @@ public class ItemServiceImplTest {
         Product product = new Product();
         product.setProductName("keyboard");
         product.setProductCategory(ELECTRONICS);
-        product.setPrice(new BigDecimal("5000"));
+        product.setPrice(5000);
         product.setProductDescription("This is used for typing on the monitor");
         ItemDtoRequest itemDtoRequest = new ItemDtoRequest();
         itemDtoRequest.setQuantity(10);
@@ -46,7 +45,7 @@ public class ItemServiceImplTest {
 
         AddItemResponse addItemResponse = itemService.addItem(itemDtoRequest);
         assertEquals(addItemResponse.getMessage(), "Successfully added item");
-        assertEquals(addItemResponse.getSubTotal(), new BigDecimal("50000"));
+        assertEquals(addItemResponse.getSubTotal(), 50000);
     }
 
     @Test
@@ -54,7 +53,7 @@ public class ItemServiceImplTest {
         Product product = new Product();
         product.setProductName("keyboard");
         product.setProductCategory(ELECTRONICS);
-        product.setPrice(new BigDecimal("5000"));
+        product.setPrice(5000);
         product.setProductDescription("This is used for typing on the monitor");
         ItemDtoRequest itemDtoRequest = new ItemDtoRequest();
         itemDtoRequest.setQuantity(10);
@@ -70,7 +69,7 @@ public class ItemServiceImplTest {
 
         ItemUpdateResponse itemUpdateResponse = itemService.updateItemById(itemUpdateRequest);
         assertEquals(itemUpdateResponse.getMessage(), "Successfully updated item");
-        assertEquals(itemUpdateResponse.getSubtotal(), new BigDecimal("25000"));
+        assertEquals(itemUpdateResponse.getSubtotal(), 25000);
     }
 
     @Test
@@ -78,7 +77,7 @@ public class ItemServiceImplTest {
         Product product = new Product();
         product.setProductName("keyboard");
         product.setProductCategory(ELECTRONICS);
-        product.setPrice(new BigDecimal("5000"));
+        product.setPrice(5000);
         product.setProductDescription("This is used for typing on the monitor");
         ItemDtoRequest itemDtoRequest = new ItemDtoRequest();
         itemDtoRequest.setQuantity(10);
@@ -93,11 +92,11 @@ public class ItemServiceImplTest {
     }
 
     @Test
-    public void testFindAllContacts() {
+    public void testFindAllItems() {
         Product product = new Product();
         product.setProductName("keyboard");
         product.setProductCategory(ELECTRONICS);
-        product.setPrice(new BigDecimal("5000"));
+        product.setPrice(5000);
         product.setProductDescription("This is used for typing on the monitor");
         ItemDtoRequest itemDtoRequest = new ItemDtoRequest();
         itemDtoRequest.setQuantity(10);

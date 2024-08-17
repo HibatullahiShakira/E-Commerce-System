@@ -4,8 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Getter @Setter @ToString
+@Getter @Setter @ToString @Document
 public class CreditCardInformation {
     private String cardNumber;
     private String expiryMonth;
@@ -14,4 +16,8 @@ public class CreditCardInformation {
     private CardType cardType;
     @Id
     private String id;
+    @DBRef
+    private User user;
+
+    private String cardHolderName;
 }

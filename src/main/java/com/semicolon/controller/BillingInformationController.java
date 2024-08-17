@@ -39,7 +39,7 @@ public class BillingInformationController {
         return ResponseEntity.ok(billingInformationService.addBillingInformation(billingInformationDtoRequest));
     }
 
-    @PutMapping("billing-Information/update")
+    @PatchMapping("billing-Information/update")
     public ResponseEntity<BillingInformationUpdateResponse> updateBillingInformation(@RequestBody BillingInformationUpdateRequest billingInformationUpdateRequest) {
         BillingInformationUpdateResponse response = billingInformationService.updateBillingInformationByUser(billingInformationUpdateRequest);
         return new ResponseEntity<>(response, HttpStatus.OK);

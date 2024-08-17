@@ -2,17 +2,18 @@ package com.semicolon.services.serviceImplementation;
 
 import com.semicolon.data.model.Product;
 import com.semicolon.data.model.UserRole;
+import com.semicolon.data.repositories.ProductRepository;
 import com.semicolon.dto.request.DeleteProductRequest;
 import com.semicolon.dto.request.ProductDtoRequest;
 import com.semicolon.dto.request.ProductUpdateRequest;
 import com.semicolon.dto.response.AddProductResponse;
 import com.semicolon.dto.response.ProductDtoResponse;
 import com.semicolon.dto.response.ProductUpdateResponse;
-import com.semicolon.repositories.ProductRepository;
 import com.semicolon.services.serviceInterface.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ import static com.semicolon.data.model.UserRole.SELLERS;
 @Service
 public class ProductServiceImpl implements ProductService {
     @Autowired
-    private  ProductRepository productRepository;
+    private ProductRepository productRepository;
 
     public ProductServiceImpl(ProductRepository productRepository){
         this.productRepository = productRepository;
@@ -40,6 +41,7 @@ public class ProductServiceImpl implements ProductService {
             foundProductDto.setProductName(product.getProductName());
             foundProductDto.setProductPrice(product.getPrice());
             foundProductDto.setProductDescription(product.getProductDescription());
+            foundProductDto.setProductCategory(product.getProductCategory());
             matchingProduct.add(foundProductDto);
 
         }
@@ -66,7 +68,9 @@ public class ProductServiceImpl implements ProductService {
         productRepository.save(product);
         AddProductResponse productResponse = new AddProductResponse();
         productResponse.setProductId(product.getId());
+        productResponse.setPrice(product.getPrice());
         productResponse.setProductName(product.getProductName());
+
         productResponse.setMessage("Product created successfully");
         return productResponse;
     }
@@ -88,7 +92,7 @@ public class ProductServiceImpl implements ProductService {
                 if (productUpdateRequest.getProductCategory() != null) {
                     foundProduct.setProductCategory(productUpdateRequest.getProductCategory());
                 }
-                if (productUpdateRequest.getProductPrice() != null) {
+                if (productUpdateRequest.getProductPrice() != productUpdateRequest.getProductPrice()) {
                     foundProduct.setPrice(productUpdateRequest.getProductPrice());
                 }
                 productRepository.save(foundProduct);
@@ -105,7 +109,7 @@ public class ProductServiceImpl implements ProductService {
         if (deleteProductRequest.getUserRole() == SELLERS) {
             Product foundProduct = productRepository.findById(deleteProductRequest.getProduct_id()).orElse(null);
             if (foundProduct == null) {
-                throw new NullPointerException("Contact not found");
+                throw new NullPointerException("Product not found");
             } else {
                 productRepository.delete(foundProduct);
             }
@@ -114,21 +118,5 @@ public class ProductServiceImpl implements ProductService {
         throw new NullPointerException("User not authorized to delete this product");
     }
 
-    @Override
-    public ProductDtoResponse getProduct() {
-        ProductDtoResponse productDtoResponse = new ProductDtoResponse();
-        Product product = productRepository.findById(productDtoResponse.getId()).orElse(null);
-        if (product == null) {
-            throw new NullPointerException("User not found");
-        } else {
-            productDtoResponse.setId(product.getId());
-            productDtoResponse.setProductName(product.getProductName());
-            productDtoResponse.setProductDescription(product.getProductDescription());
-            productDtoResponse.setProductCategory(product.getProductCategory());
-            productDtoResponse.setProductPrice(product.getPrice());
-            productRepository.save(product);
-        }
-        return productDtoResponse;
-    }
 
 }

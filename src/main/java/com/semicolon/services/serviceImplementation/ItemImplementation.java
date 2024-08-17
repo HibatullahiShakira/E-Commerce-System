@@ -2,13 +2,13 @@ package com.semicolon.services.serviceImplementation;
 
 import com.semicolon.data.model.Item;
 import com.semicolon.data.model.Product;
+import com.semicolon.data.repositories.ItemRepository;
 import com.semicolon.dto.request.DeleteItemRequest;
 import com.semicolon.dto.request.ItemDtoRequest;
 import com.semicolon.dto.request.ItemUpdateRequest;
 import com.semicolon.dto.response.AddItemResponse;
 import com.semicolon.dto.response.ItemDtoResponse;
 import com.semicolon.dto.response.ItemUpdateResponse;
-import com.semicolon.repositories.ItemRepository;
 import com.semicolon.services.serviceInterface.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,8 +39,9 @@ public class ItemImplementation implements ItemService {
         item.setProduct(itemDtoRequest.getProduct());
         item.setQuantity(itemDtoRequest.getQuantity());
         item.setItemId(itemDtoRequest.getItemId());
-        BigDecimal price = itemDtoRequest.getProduct().getPrice();
-        BigDecimal subTotal = price.multiply(new BigDecimal(itemDtoRequest.getQuantity()));
+
+        double price = itemDtoRequest.getProduct().getPrice();
+        double subTotal = price * itemDtoRequest.getQuantity();
         item.setSubTotal(subTotal);
         itemRepository.save(item);
 
@@ -55,11 +56,10 @@ public class ItemImplementation implements ItemService {
     public ItemUpdateResponse updateItemById(ItemUpdateRequest itemUpdateRequest) {
         Item item = itemRepository.findById(itemUpdateRequest.getItemId()).orElse(null);
         if (item != null) {
-            if (itemUpdateRequest.getQuantity() != item.getQuantity() || itemUpdateRequest.getProduct() != null) {
+            if (itemUpdateRequest.getQuantity() != item.getQuantity()) {
                 item.setQuantity(itemUpdateRequest.getQuantity());
-                item.setProduct(item.getProduct());
-                BigDecimal productPrice = item.getProduct().getPrice();
-                BigDecimal subTotal = productPrice.multiply(new BigDecimal(itemUpdateRequest.getQuantity()));
+                double productPrice = item.getProduct().getPrice();
+                double subTotal = productPrice * itemUpdateRequest.getQuantity();
                 item.setSubTotal(subTotal);
             }
         }else {
@@ -94,7 +94,8 @@ public class ItemImplementation implements ItemService {
         itemDtoResponse.setQuantity(item.getQuantity());
         itemDtoResponse.setProduct(item.getProduct());
         itemDtoResponse.setItemId(item.getItemId());
-        BigDecimal subTotal = product.getPrice().multiply(new BigDecimal(itemDtoRequest.getQuantity()));
+        itemDtoResponse.setPrice(item.getProduct().getPrice());
+        double subTotal = itemDtoResponse.getProduct().getPrice() * itemDtoResponse.getQuantity();
         itemDtoResponse.setSubTotal(subTotal);
         return itemDtoResponse;
     }

@@ -1,14 +1,14 @@
 package com.semicolon.services.serviceImplementation;
 
 import com.semicolon.data.model.BillingInformation;
+import com.semicolon.data.repositories.BillingInformationRepository;
+import com.semicolon.data.repositories.UserRepository;
 import com.semicolon.dto.request.*;
 import com.semicolon.dto.response.*;
-import com.semicolon.repositories.BillingInformationRepository;
 import com.semicolon.services.serviceInterface.BillingInformationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.semicolon.data.model.UserRole.ADMINISTRATORS;
@@ -19,6 +19,8 @@ public class BillingInformationServiceImpl implements BillingInformationService 
 
     @Autowired
     private BillingInformationRepository billingInformationRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     public BillingInformationServiceImpl(BillingInformationRepository billingInformationRepository){
         this.billingInformationRepository = billingInformationRepository;
@@ -27,11 +29,14 @@ public class BillingInformationServiceImpl implements BillingInformationService 
 
     @Override
     public List<BillingInformation> getAllBillingInformationByUserRole(GetListBillingInformation getListBillingInformation) {
-            List<BillingInformation> listBillingInformation = billingInformationRepository.findAllByUserRole(getListBillingInformation.getUser(), getListBillingInformation.getUserRole());
-            if (listBillingInformation == null) {
-                throw new NullPointerException("List of BillingInformation not found");
+            if(getListBillingInformation.getUser().getRole() == ADMINISTRATORS) {
+                List<BillingInformation> listBillingInformation = billingInformationRepository.findAllByUser(getListBillingInformation.getUser());
+                if (listBillingInformation == null) {
+                    throw new NullPointerException("List of BillingInformation not found");
+                }
+                return listBillingInformation;
             }
-            return listBillingInformation;
+            throw new NullPointerException("User is not admin");
     }
 
     @Override

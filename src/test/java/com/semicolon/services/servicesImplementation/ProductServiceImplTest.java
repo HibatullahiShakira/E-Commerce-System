@@ -1,20 +1,18 @@
 package com.semicolon.services.servicesImplementation;
 
 import com.semicolon.data.model.Product;
-import com.semicolon.data.model.UserRole;
+import com.semicolon.data.repositories.ProductRepository;
 import com.semicolon.dto.request.DeleteProductRequest;
 import com.semicolon.dto.request.ProductDtoRequest;
 import com.semicolon.dto.request.ProductUpdateRequest;
 import com.semicolon.dto.response.AddProductResponse;
 import com.semicolon.dto.response.ProductUpdateResponse;
-import com.semicolon.repositories.ProductRepository;
 import com.semicolon.services.serviceInterface.ProductService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import static com.semicolon.data.model.ProductCategory.ELECTRONICS;
@@ -41,11 +39,12 @@ public class ProductServiceImplTest {
         productRequest.setProductDescription("Use for writing things down");
         productRequest.setProductCategory(STATIONARIES);
         productRequest.setUserRole(SELLERS);
-        productRequest.setProductPrice(new BigDecimal("7809089"));
+        productRequest.setProductPrice(7000);
 
         AddProductResponse addProductResponse = productService.addProductBySellers(productRequest);
         //System.out.println(addProductResponse.getId());
         assertEquals(addProductResponse.getMessage(), "Product created successfully");
+        assertEquals(addProductResponse.getPrice(), 7000);
     }
 
     @Test
@@ -54,7 +53,7 @@ public class ProductServiceImplTest {
         productRequest.setProductName("Book");
         productRequest.setProductDescription("Use for writing things down");
         productRequest.setProductCategory(STATIONARIES);
-        productRequest.setProductPrice(new BigDecimal("9809089"));
+        productRequest.setProductPrice(1000);
         AddProductResponse addProductResponse = productService.addProductBySellers(productRequest);
 
         ProductUpdateRequest productUpdateRequest = new ProductUpdateRequest();
@@ -86,7 +85,7 @@ public class ProductServiceImplTest {
     }
 
     @Test
-    public void testFindAllContacts() {
+    public void testFindAllProducts() {
         ProductDtoRequest productRequest = new ProductDtoRequest();
         productRequest.setProductName("Book");
         productRequest.setProductDescription("Use for writing things down");

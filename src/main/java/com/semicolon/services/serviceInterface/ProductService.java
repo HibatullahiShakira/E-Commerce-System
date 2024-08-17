@@ -17,6 +17,5 @@ public interface ProductService {
     AddProductResponse addProductBySellers(ProductDtoRequest productDtoRequest);
     ProductUpdateResponse updateProductBySellers(ProductUpdateRequest productUpdateRequest, UserRole userRole);
     String deleteProductSeller(DeleteProductRequest productRequest);
-    ProductDtoResponse getProduct();
 
 }

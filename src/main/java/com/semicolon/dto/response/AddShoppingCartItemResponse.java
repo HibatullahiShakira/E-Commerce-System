@@ -13,8 +13,7 @@ import java.time.LocalDateTime;
 public class AddShoppingCartItemResponse {
     private LocalDateTime creationDate = LocalDateTime.now();
     private OrderStatus status;
-    private String userId;
-    private BigDecimal totalPrice;
+    private double totalPrice;
     private String message;
     private String shoppingCartId;
 }

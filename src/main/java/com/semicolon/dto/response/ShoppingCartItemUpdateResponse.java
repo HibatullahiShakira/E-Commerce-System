@@ -15,5 +15,5 @@ public class ShoppingCartItemUpdateResponse {
     private String message;
     private LocalDateTime creationDate;
     private OrderStatus status;
-    private BigDecimal totalPrice;
+    private double totalPrice;
 }

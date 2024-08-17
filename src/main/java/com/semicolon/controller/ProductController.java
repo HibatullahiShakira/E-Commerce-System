@@ -36,18 +36,13 @@ public class ProductController {
         return new ResponseEntity<>(productService.getAllProduct(), HttpStatus.OK);
     }
 
-    @GetMapping("product")
-    public ResponseEntity<ProductDtoResponse> getProduct(@RequestBody ProductDtoRequest productDtoRequest) {
-        return ResponseEntity.ok(productService.getProduct());
-    }
-
     @PostMapping("product/createBySellers")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<AddProductResponse> createProduct(@RequestBody ProductDtoRequest productDtoRequest) {
         return ResponseEntity.ok(productService.addProductBySellers(productDtoRequest));
     }
 
-    @PutMapping("product/updateBySellers")
+    @PatchMapping("product/updateBySellers")
     public ResponseEntity<ProductUpdateResponse> updateProduct(@RequestBody ProductUpdateRequest productUpdateRequest) {
         ProductUpdateResponse response = productService.updateProductBySellers(productUpdateRequest, SELLERS );
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -56,7 +51,7 @@ public class ProductController {
     @DeleteMapping("product/deleteBySellers")
     public ResponseEntity<String> deleteProduct(@RequestBody DeleteProductRequest deleteProductRequest) {
         productService.deleteProductSeller(deleteProductRequest);
-        return new ResponseEntity<>("Contact deleted sucessfully", HttpStatus.OK);
+        return new ResponseEntity<>("Product deleted sucessfully", HttpStatus.OK);
     }
 
     @GetMapping("product_by_name")

@@ -2,7 +2,6 @@ package com.semicolon.dto.request;
 
 import com.semicolon.data.model.CreditCardInformation;
 import com.semicolon.data.model.User;
-import com.semicolon.data.model.UserRole;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -5,7 +5,7 @@ import lombok.ToString;
 
 @Getter @ToString
 public enum UserRole {
-    CUSTOMERS,
     SELLERS,
     ADMINISTRATORS,
+    CUSTOMERS,
 }

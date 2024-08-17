@@ -44,7 +44,7 @@ public class ShoppingCartItemController {
         return ResponseEntity.ok(shoppingCartItemService.addShoppingCartItem(shoppingCartItemDtoRequest));
     }
 
-    @PutMapping("shoppingCartItem/updateByShoppingCartId")
+    @PatchMapping("shoppingCartItem/updateByShoppingCartId")
     public ResponseEntity<ShoppingCartItemUpdateResponse> updateShoppingCartItemById(@RequestBody ShoppingCartItemUpdateRequest shoppingCartItemUpdateRequest) {
         ShoppingCartItemUpdateResponse response = shoppingCartItemService.updateShoppingCartItemById(shoppingCartItemUpdateRequest);
         return new ResponseEntity<>(response, HttpStatus.OK);

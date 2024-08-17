@@ -12,5 +12,5 @@ public class ProductDtoResponse {
     private String productName;
     private String productDescription;
     private ProductCategory productCategory;
-    private BigDecimal productPrice;
+    private double productPrice;
 }

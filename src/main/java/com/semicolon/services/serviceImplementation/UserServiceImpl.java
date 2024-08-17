@@ -1,11 +1,11 @@
 package com.semicolon.services.serviceImplementation;
 
 import com.semicolon.data.model.*;
+import com.semicolon.data.repositories.UserRepository;
 import com.semicolon.dto.request.*;
 import com.semicolon.dto.response.AddUserResponse;
 import com.semicolon.dto.response.UserDtoResponse;
 import com.semicolon.dto.response.UserUpdateResponse;
-import com.semicolon.repositories.UserRepository;
 import com.semicolon.services.serviceInterface.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,8 +25,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllUser(GetUserRoleRequest userRole) {
-        if(userRole.getUserRole() == ADMINISTRATORS){
+    public List<User> getAllUser(ValidateUserRequest validateUserRequest) {
+        User user = userRepository.findUserByEmailAddressAndPassword(validateUserRequest.getEmailAddress(), validateUserRequest.getPassword());
+        if(user.getRole() == ADMINISTRATORS){
             List<User> users = userRepository.findAll();
             return users;
         }
@@ -35,6 +36,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public AddUserResponse addUser(UserDtoRequest userDtoRequest) {
+        CreditCardInformation creditCardInformation = new CreditCardInformation();
         User user = new User();
         user.setAddress(userDtoRequest.getAddress());
         user.setName(userDtoRequest.getName());
@@ -46,13 +48,15 @@ public class UserServiceImpl implements UserService {
         user.setPhoneNumber(userDtoRequest.getPhoneNumber());
         user.setEmailAddress(userDtoRequest.getEmailAddress());
         userRepository.save(user);
-        AddUserResponse addUserResponse = new AddUserResponse("Account Created Successfully");
+        AddUserResponse addUserResponse = new AddUserResponse();
+        addUserResponse.setId(user.getUserId());
+        addUserResponse.setMessage("Successfully added user");
         return addUserResponse;
     }
 
     @Override
-    public UserUpdateResponse updateUser(UserUpdateRequest userUpdateRequest, ValidateUserRequest validateUserRequest) {
-        User foundUser = userRepository.findUserByEmailAddressAndPassword(validateUserRequest.getEmailAddress().toLowerCase(), validateUserRequest.getPassword());
+    public UserUpdateResponse updateUser(UserUpdateRequest userUpdateRequest) {
+        User foundUser = userRepository.findUserByEmailAddressAndPassword(userUpdateRequest.getEmailAddress(), userUpdateRequest.getPassword());
         if(foundUser == null){
             throw new NullPointerException("User not found");
         }else {
@@ -86,7 +90,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String removeUser(ValidateUserRequest validateUserRequest) {
-        User user = userRepository.findUserByEmailAddressAndPassword(validateUserRequest.getEmailAddress().toLowerCase(), validateUserRequest.getPassword());
+        User user = userRepository.findUserByEmailAddressAndPassword(validateUserRequest.getEmailAddress(), validateUserRequest.getPassword());
         if(user == null){
             throw new NullPointerException("User not found");
         }

@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.semicolon.data.model.UserRole.SELLERS;
-
 @RestController
 @RequestMapping("/user-api/")
 public class UserController {
@@ -25,8 +23,8 @@ public class UserController {
     }
 
     @GetMapping("users")
-    public ResponseEntity<List<User>> getAllUserByAdministrators(GetUserRoleRequest getUserRoleRequest) {
-        return new ResponseEntity<>(userService.getAllUser(getUserRoleRequest), HttpStatus.OK);
+    public ResponseEntity<List<User>> getAllUserByAdministrators(ValidateUserRequest validateUserRequest ) {
+        return new ResponseEntity<>(userService.getAllUser(validateUserRequest), HttpStatus.OK);
     }
 
     @GetMapping("user")
@@ -40,16 +38,16 @@ public class UserController {
         return ResponseEntity.ok(userService.addUser(userDtoRequest));
     }
 
-    @PutMapping("user/update")
+    @PatchMapping("user/update")
     public ResponseEntity<UserUpdateResponse> updateUser(@RequestBody UserUpdateRequest userUpdateRequest, ValidateUserRequest validateUserRequest) {
-        UserUpdateResponse response = userService.updateUser(userUpdateRequest, validateUserRequest);
+        UserUpdateResponse response = userService.updateUser(userUpdateRequest);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("user/delete")
     public ResponseEntity<String> deleteUser(@RequestBody ValidateUserRequest validateUserRequest) {
         userService.removeUser(validateUserRequest);
-        return new ResponseEntity<>("Contact deleted sucessfully", HttpStatus.OK);
+        return new ResponseEntity<>("user deleted sucessfully", HttpStatus.OK);
     }
 
 }

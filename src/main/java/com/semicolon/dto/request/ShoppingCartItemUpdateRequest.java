@@ -15,7 +15,7 @@ public class ShoppingCartItemUpdateRequest {
     private Item items;
     private OrderStatus status;
     private String userId;
-    private String taxRate;
+    private int taxRate;
     private String id;
     private User user;
 }

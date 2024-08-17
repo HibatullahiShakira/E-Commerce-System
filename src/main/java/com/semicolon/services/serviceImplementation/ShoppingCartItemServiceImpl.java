@@ -1,6 +1,9 @@
 package com.semicolon.services.serviceImplementation;
 
+import com.semicolon.data.model.Item;
+import com.semicolon.data.model.OrderStatus;
 import com.semicolon.data.model.ShoppingCartItem;
+import com.semicolon.data.repositories.ShoppingCartRepository;
 import com.semicolon.dto.request.DeleteShoppingCartItemRequest;
 import com.semicolon.dto.request.GetShoppingCartItemDtoRequest;
 import com.semicolon.dto.request.ShoppingCartItemDtoRequest;
@@ -8,7 +11,6 @@ import com.semicolon.dto.request.ShoppingCartItemUpdateRequest;
 import com.semicolon.dto.response.AddShoppingCartItemResponse;
 import com.semicolon.dto.response.ShoppingCartItemDtoResponse;
 import com.semicolon.dto.response.ShoppingCartItemUpdateResponse;
-import com.semicolon.repositories.ShoppingCartRepository;
 import com.semicolon.services.serviceInterface.ShoppingCartItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,8 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static com.semicolon.data.model.OrderStatus.PENDING;
 
 @Service
 public class ShoppingCartItemServiceImpl implements ShoppingCartItemService {
@@ -34,6 +38,7 @@ public class ShoppingCartItemServiceImpl implements ShoppingCartItemService {
 
     @Override
     public AddShoppingCartItemResponse addShoppingCartItem(ShoppingCartItemDtoRequest shoppingCartItemDtoRequest) {
+        double subTotal = 0;
         ShoppingCartItem shoppingCartItem = new ShoppingCartItem();
         shoppingCartItem.setCreationDate(LocalDateTime.now());
         shoppingCartItem.setItems(shoppingCartItemDtoRequest.getItems());
@@ -41,19 +46,21 @@ public class ShoppingCartItemServiceImpl implements ShoppingCartItemService {
         shoppingCartItem.setStatus(shoppingCartItemDtoRequest.getStatus());
         shoppingCartItem.setUser(shoppingCartItem.getUser());
         shoppingCartItem.setUserId(shoppingCartItemDtoRequest.getUser().getUserId());
-        BigDecimal taxRateDecimal = new BigDecimal(shoppingCartItemDtoRequest.getTax()).divide(new BigDecimal(100));
-        BigDecimal subTotal = shoppingCartItemDtoRequest.getItems().getSubTotal();
-        BigDecimal taxAmount = subTotal.multiply(taxRateDecimal);
-        BigDecimal subTotalAmount = subTotal.add(taxAmount);
+        for (Item item : shoppingCartItemDtoRequest.getItems()) {
+            subTotal += item.getSubTotal();
+        }
+        double taxRateDecimal = shoppingCartItemDtoRequest.getTax() / 100;
+        double taxAmount = subTotal * taxRateDecimal;
+        double subTotalAmount = subTotal + taxAmount;
         shoppingCartItem.setTotalPrice(subTotalAmount);
         shoppingCartRepository.save(shoppingCartItem);
 
         AddShoppingCartItemResponse addShoppingCartItemResponse = new AddShoppingCartItemResponse();
         addShoppingCartItemResponse.setCreationDate(LocalDateTime.now());
-        addShoppingCartItemResponse.setStatus(shoppingCartItem.getStatus());
-        addShoppingCartItemResponse.setUserId(shoppingCartItemDtoRequest.getUserId());
+        addShoppingCartItemResponse.setStatus(PENDING);
         addShoppingCartItemResponse.setShoppingCartId(shoppingCartItem.getShoppingCartId());
-        addShoppingCartItemResponse.setTotalPrice(shoppingCartItemDtoRequest.getTotalPrice());
+        addShoppingCartItemResponse.setTotalPrice(shoppingCartItem.getTotalPrice());
+        addShoppingCartItemResponse.setMessage("Shopping cart added successfully");
         return addShoppingCartItemResponse;
     }
 
@@ -112,16 +119,13 @@ public class ShoppingCartItemServiceImpl implements ShoppingCartItemService {
             if (shoppingCartItemUpdateRequest.getStatus() != null) {
                 shoppingCartItem.setStatus(shoppingCartItemUpdateRequest.getStatus());
             }
-            if (shoppingCartItemUpdateRequest.getTaxRate() != null) {
+            if (shoppingCartItemUpdateRequest.getTaxRate() != shoppingCartItem.getTaxRate()) {
                 shoppingCartItem.setTaxRate(shoppingCartItemUpdateRequest.getTaxRate());
-                BigDecimal newTaxRateDecimal = new BigDecimal(shoppingCartItemUpdateRequest.getTaxRate());
-                BigDecimal newSubTotal = shoppingCartItemUpdateRequest.getItems().getSubTotal();
-                BigDecimal newTaxAmount = newSubTotal.multiply(newTaxRateDecimal);
-                BigDecimal subTotalAmount = newSubTotal.add(newTaxAmount);
+                double newTaxRateDecimal = shoppingCartItemUpdateRequest.getTaxRate();
+                double newSubTotal = shoppingCartItemUpdateRequest.getItems().getSubTotal();
+                double newTaxAmount = newSubTotal * newTaxRateDecimal;
+                double subTotalAmount = newSubTotal + newTaxAmount;
                 shoppingCartItem.setTotalPrice(subTotalAmount);
-            }
-            if (shoppingCartItemUpdateRequest.getItems() != null) {
-                shoppingCartItem.setItems(shoppingCartItemUpdateRequest.getItems());
             }
         }
         shoppingCartRepository.save(shoppingCartItem);

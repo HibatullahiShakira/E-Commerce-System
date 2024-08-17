@@ -15,5 +15,5 @@ public class ProductUpdateRequest {
     private String productName;
     private String productDescription;
     private ProductCategory productCategory;
-    private BigDecimal productPrice;
+    private double productPrice;
 }

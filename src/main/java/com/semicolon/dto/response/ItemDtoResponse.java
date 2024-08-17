@@ -11,5 +11,6 @@ public class ItemDtoResponse {
     private String itemId;
     private Product product;
     private int quantity;
-    private BigDecimal subTotal;
+    private double subTotal;
+    private double price;
 }

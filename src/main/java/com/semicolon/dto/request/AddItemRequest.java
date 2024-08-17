@@ -10,5 +10,5 @@ import java.math.BigDecimal;
 public class AddItemRequest {
     private Product product;
     private int quantity;
-    private BigDecimal subTotal;
+    private double subTotal;
 }

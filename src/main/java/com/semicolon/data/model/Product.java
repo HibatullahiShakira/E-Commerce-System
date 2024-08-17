@@ -3,10 +3,11 @@ package com.semicolon.data.model;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
 
-@Getter @Setter
+@Getter @Setter @Document
 public class Product {
     private UserRole userRole;
     private String productName;
@@ -14,5 +15,5 @@ public class Product {
     @Id
     private String id;
     private ProductCategory productCategory;
-    private BigDecimal price;
+    private double price;
 }

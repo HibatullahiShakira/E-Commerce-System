@@ -1,4 +1,4 @@
-package com.semicolon.repositories;
+package com.semicolon.data.repositories;
 
 import com.semicolon.data.model.ShoppingCartItem;
 import com.semicolon.data.model.User;

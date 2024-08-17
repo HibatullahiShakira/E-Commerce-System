@@ -38,7 +38,7 @@ public class ItemController {
         return ResponseEntity.ok(itemService.addItem(ItemDtoRequest));
     }
 
-    @PutMapping("item/update")
+    @PatchMapping("item/update")
     public ResponseEntity<ItemUpdateResponse> updateItem(@RequestBody ItemUpdateRequest ItemUpdateRequest) {
         ItemUpdateResponse response = itemService.updateItemById(ItemUpdateRequest);
         return new ResponseEntity<>(response, HttpStatus.OK);
