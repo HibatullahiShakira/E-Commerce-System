@@ -42,6 +42,7 @@ public class ProductServiceImpl implements ProductService {
             foundProductDto.setProductPrice(product.getPrice());
             foundProductDto.setProductDescription(product.getProductDescription());
             foundProductDto.setProductCategory(product.getProductCategory());
+            foundProductDto.setProductImage(productDtoRequest.getProductImage());
             matchingProduct.add(foundProductDto);
 
         }
@@ -65,6 +66,7 @@ public class ProductServiceImpl implements ProductService {
         product.setProductDescription(productDtoRequest.getProductDescription());
         product.setProductCategory(productDtoRequest.getProductCategory());
         product.setPrice(productDtoRequest.getProductPrice());
+        product.setImage(productDtoRequest.getProductImage());
         productRepository.save(product);
         AddProductResponse productResponse = new AddProductResponse();
         productResponse.setProductId(product.getId());
@@ -94,6 +96,9 @@ public class ProductServiceImpl implements ProductService {
                 }
                 if (productUpdateRequest.getProductPrice() != productUpdateRequest.getProductPrice()) {
                     foundProduct.setPrice(productUpdateRequest.getProductPrice());
+                }
+                if(productUpdateRequest.getProductImage() != null) {
+                    foundProduct.setImage(productUpdateRequest.getProductImage());
                 }
                 productRepository.save(foundProduct);
                 productUpdateResponse.setMessage("Product updated successfully");

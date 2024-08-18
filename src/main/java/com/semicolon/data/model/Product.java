@@ -2,6 +2,7 @@ package com.semicolon.data.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.bson.types.Binary;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -16,4 +17,5 @@ public class Product {
     private String id;
     private ProductCategory productCategory;
     private double price;
+    private Binary image;
 }
